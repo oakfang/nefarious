@@ -15,5 +15,12 @@
   "bugs": {
     "url": "https://github.com/oakfang/nefarious/issues"
   },
-  "homepage": "https://github.com/oakfang/nefarious#readme"
+  "homepage": "https://github.com/oakfang/nefarious#readme",
+  "dependencies": {
+    "chalk": "^1.1.3",
+    "co": "^4.6.0",
+    "diff": "^3.1.0",
+    "lodash": "^4.17.2",
+    "ora": "^0.3.0"
+  }
 }
