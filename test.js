@@ -25,3 +25,15 @@ test('Complex test', t => {
   t.truthy();
   t.falsy([null]);
 });
+
+const unpatch = test.patch({
+  fs: {readFile: 5},
+});
+
+test('Patch test', t => {
+  let fs = require('fs');
+  t.is(fs.readFile, 5);
+  unpatch();
+  fs = require('fs');
+  t.isNot(fs.readFile, 5);
+});

@@ -1,3 +1,4 @@
+const Module = require('module');
 const co = require('co');
 const ora = require('ora');
 const chalk = require('chalk');
@@ -91,5 +92,22 @@ function test(testName, scenario) {
       if (!running.size) report();
     });
 }
+
+test.patch = (patches) => {
+  const moduleCache = Module._cache;
+  const resolved = Object.keys(patches).reduce((ms, m) => {
+    ms[require.resolve(m)] = patches[m];
+    return ms;
+  }, {});
+  Module._cache = new Proxy(moduleCache, {
+    get(cache, resolvedModule) {
+      const patch = resolved[resolvedModule];
+      return patch ? { exports: patch } : cache[resolvedModule];
+    },
+  });
+  return () => {
+    Module._cache = moduleCache;
+  };
+};
 
 module.exports = test;
