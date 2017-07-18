@@ -1,10 +1,10 @@
 {
   "name": "nefarious",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "A package that does stuff",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node test"
   },
   "repository": {
     "type": "git",
@@ -12,6 +12,9 @@
   },
   "author": "Alon Niv",
   "license": "MIT",
+  "engines": {
+    "node": ">=8.1.4"
+  },
   "bugs": {
     "url": "https://github.com/oakfang/nefarious/issues"
   },
@@ -21,6 +24,7 @@
     "co": "^4.6.0",
     "diff": "^3.1.0",
     "lodash": "^4.17.2",
-    "ora": "^0.3.0"
+    "ora": "^0.3.0",
+    "shared-resource": "^1.0.0"
   }
 }
