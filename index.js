@@ -16,8 +16,12 @@ const failures = {};
 const errors = {};
 const before = [];
 const after = [];
+const queue = [];
 const running = new Set();
-const isTest = Symbol('@@isTest');
+const isTest = Symbol("@@isTest");
+const globalState = {
+  isPartOfSuite: false
+};
 
 const testInstance = name => {
   let passing = true;
@@ -78,7 +82,7 @@ function report() {
   process.exit(1);
 }
 
-const test = Resource.wrap(async (testName, scenario) => {
+const execute = Resource.wrap(async ({ testName, scenario, deferred }) => {
   const spinner = ora(testName).start();
   const t = testInstance(testName);
   Resource.now[isTest] = true;
@@ -98,8 +102,23 @@ const test = Resource.wrap(async (testName, scenario) => {
     spinner.fail();
   }
   running.delete(t);
-  if (!running.size) report();
+  deferred.resolve(t.passed);
+  setImmediate(() => {
+    if (!running.size) report();
+  });
 });
+
+function test(testName, scenario, autorun = true) {
+  const deferred = {};
+  deferred.promise = new Promise(resolve => {
+    deferred.resolve = resolve;
+  });
+  queue.push({ testName, scenario, deferred });
+  if (autorun) {
+    execute(queue.shift());
+  }
+  return deferred.promise;
+}
 
 test.patch = patches => {
   const moduleCache = Module._cache;
@@ -121,5 +140,12 @@ test.patch = patches => {
 test.beforeEach = fn => before.push(fn);
 test.afterEach = fn => after.push(fn);
 test.isTest = isTest;
+test.export = (testName, scenario) =>
+  test(testName, scenario, globalState.isPartOfSuite);
+test.suite = fn => {
+  globalState.isPartOfSuite = true;
+  fn();
+  globalState.isPartOfSuite = false;
+};
 
 module.exports = test;
