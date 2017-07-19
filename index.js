@@ -64,7 +64,7 @@ const testInstance = name => {
 function report() {
   if (_.isEmpty(errors) && _.isEmpty(failures)) {
     console.log(chalk.green("All tests passed successfully"));
-    return;
+    process.exit(0);
   }
   if (!_.isEmpty(failures)) {
     console.error(chalk.red("===========FAILURES============="));
