@@ -1,9 +1,16 @@
 const Module = require("module");
+const path = require("path");
 const co = require("co");
 const ora = require("ora");
 const chalk = require("chalk");
+const glob = require("glob");
 const Resource = require("shared-resource");
 const _ = require("lodash");
+
+const aglob = paths =>
+  new Promise((resolve, reject) => {
+    glob(paths, (err, files) => (err ? reject(err) : resolve(files)));
+  });
 
 const resolveScenario = (scenario, t) => {
   if (scenario.constructor.name === "GeneratorFunction") {
@@ -142,9 +149,15 @@ test.afterEach = fn => after.push(fn);
 test.isTest = isTest;
 test.export = (testName, scenario) =>
   test(testName, scenario, globalState.isPartOfSuite);
-test.suite = fn => {
+test.suite = async (base, paths) => {
   globalState.isPartOfSuite = true;
-  fn();
+  if (!Array.isArray(paths)) {
+    paths = [paths];
+  }
+  const files = [].concat(
+    ...(await Promise.all(paths.map(p => aglob(path.join(base, p)))))
+  );
+  files.forEach(require);
   globalState.isPartOfSuite = false;
 };
 

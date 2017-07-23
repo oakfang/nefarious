@@ -1,2 +1,2 @@
 const test = require("..");
-test.suite(() => [require("./a"), require("./b"), require("./test")]);
+test.suite(__dirname, './*.spec.js');

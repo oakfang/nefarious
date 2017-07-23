@@ -46,9 +46,7 @@ However, this:
 
 ```js
 const test = require('nefarious');
-test.suite(() => [
-    require('./src/sum');
-]);
+test.suite(__dirname, '../src/**/*.spec.js');
 ```
 
 Will run the tests. Basically, use `test.suite` when you need to run multiple tests.
