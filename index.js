@@ -4,7 +4,7 @@ const co = require("co");
 const ora = require("ora");
 const chalk = require("chalk");
 const glob = require("glob");
-const Resource = require("shared-resource");
+const Resource = require("async-reach");
 const _ = require("lodash");
 
 const aglob = paths =>
@@ -146,7 +146,6 @@ test.patch = patches => {
 
 test.beforeEach = fn => before.push(fn);
 test.afterEach = fn => after.push(fn);
-test.isTest = isTest;
 test.export = (testName, scenario) =>
   test(testName, scenario, globalState.isPartOfSuite);
 test.suite = async (base, paths) => {
@@ -160,5 +159,20 @@ test.suite = async (base, paths) => {
   files.forEach(require);
   globalState.isPartOfSuite = false;
 };
+
+Object.defineProperties(test, {
+  isTest: {
+    get() {
+      return Resource.now[isTest];
+    }
+  },
+  context: {
+    get() {
+      if (test.isTest) {
+        return Resource.now.context;
+      }
+    }
+  }
+});
 
 module.exports = test;

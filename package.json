@@ -1,6 +1,6 @@
 {
   "name": "nefarious",
-  "version": "2.1.0",
+  "version": "3.0.0",
   "description": "Quick and easy testing library",
   "main": "index.js",
   "scripts": {
@@ -20,14 +20,14 @@
   },
   "homepage": "https://github.com/oakfang/nefarious#readme",
   "dependencies": {
+    "async-reach": "^1.0.0",
     "chalk": "^1.1.3",
     "co": "^4.6.0",
     "glob": "^7.1.2",
-    "lodash": "^4.17.2",
-    "ora": "^0.3.0",
-    "shared-resource": "^1.0.0"
+    "lodash": "^4.17.11",
+    "ora": "^0.3.0"
   },
   "devDependencies": {
-    "nyc": "^11.0.3"
+    "nyc": "^13.1.0"
   }
 }

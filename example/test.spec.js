@@ -1,11 +1,10 @@
-const Resource = require("shared-resource");
 const test = require("..");
 
 const sleep = t => new Promise(resolve => setTimeout(resolve, t));
 
 async function foo() {
   await sleep(3000);
-  return Resource.now[test.isTest] ? Resource.now.context.a : 1;
+  return test.isTest ? test.context.a : 1;
 }
 
 test.beforeEach(t => {
