@@ -1,6 +1,6 @@
 {
   "name": "nefarious",
-  "version": "3.0.0",
+  "version": "3.1.0",
   "description": "Quick and easy testing library",
   "main": "index.js",
   "scripts": {

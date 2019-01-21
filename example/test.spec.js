@@ -41,7 +41,11 @@ test("Complex test", t => {
   t.falsy([null]);
 });
 
+test("Should not fail", t => t.throws(() => null.tr));
+
 test("Serial test", t => t.is(2, 2)).then(test("phase 2", t => t.is(3, 3)));
+
+test("Deep equal", t => t.deepEquals([1, 2, 3], [1, 2, 3]));
 
 const unpatch = test.patch({
   fs: { readFile: 5 }

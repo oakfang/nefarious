@@ -64,6 +64,24 @@ const testInstance = name => {
   base.isNot = addCheck((x, y) => x !== y, (x, y) => `${x} is ${y}`);
   base.truthy = addCheck(x => x, x => `${x} is not truthy`);
   base.falsy = addCheck(x => !x, x => `${x} is not falsy`);
+  base.deepEquals = addCheck(
+    _.isEqual,
+    (x, y) => `${x} does not deeply equal to ${y}`
+  );
+  base.throws = addCheck(
+    (shouldThrow, msg) => {
+      try {
+        shouldThrow();
+        return false;
+      } catch (e) {
+        if (msg) {
+          return e.message === msg;
+        }
+        return true;
+      }
+    },
+    () => "Callback should have failed, but passed instead"
+  );
 
   return base;
 };
